@@ -64,11 +64,54 @@ public class Personal_Information{
 	
 	
 public static void login(){
-		
+	try{
+		File Information = new File("information.txt");
+		File Account = new File("account.txt");
+		ArrayList<String> account = new ArrayList<String>();
+		ArrayList<String> info = new ArrayList<String>();
+		Scanner inputFromAccount = new Scanner(Account);
+		Scanner inputFromInformation = new Scanner(Information);
+		while (inputFromInformation.hasNext()){
+			info.add(inputFromInformation.next());
+		}
+		while (inputFromAccount.hasNext()){
+			account.add(inputFromAccount.next());
+		}
+	boolean passwordcheck=false;
+	String PassWord="";
+	String UserName="";
+	Scanner input = new Scanner(System.in);
+	System.out.println("Enter your username");
+	String username = input.next();
+	do{
+	System.out.println("Enter your password");
+	String password = input.next();
+	for(int i=0; i<account.size();i++){
+		UserName=account.get(i);
+		if(UserName.equals(username)){
+			 PassWord=account.get(i+1);
+			if (PassWord.equals(password)){
+				passwordcheck=true;
+			}
+		}
+	}
+	if (!passwordcheck)System.out.println("Password invalid");
+	}while(!passwordcheck);
+	
+	
+	
+	System.out.println("Right");
 	}
 	
+	catch (java.io.IOException ex){
+		System.out.println("I/O Errors: File is not found");
+			}	
+}
 	
-
+	
+	
+	
+	
 
 public static boolean validigits(String pass){
 	if (pass.length()>8){
