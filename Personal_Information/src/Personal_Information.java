@@ -2,8 +2,14 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 public class Personal_Information{
+	
+	
 	public static void main(String[]args) throws IOException {
-		
+		starter();
+		}
+	
+	
+	public static void starter() throws IOException{
 		System.out.println("Welcome to the InfoCabinet"+"\nType and Enter,\n(1)for creating an account.\n(2)for returning users login.\n(3)to exit.");
 		Scanner input = new Scanner(System.in);
 		int userCommand = input.nextInt();
@@ -18,9 +24,7 @@ public class Personal_Information{
 			System.exit(0);
 			System.out.println("Thanks for using InfoCabinet!");
 			}
-		
-
-		}
+	}
 		
 
 	public static void createAccount()throws IOException{
@@ -63,7 +67,7 @@ public class Personal_Information{
 		}
 	
 	
-public static void login(){
+	public static void login(){
 	try{
 		File Information = new File("information.txt");
 		File Account = new File("account.txt");
@@ -78,29 +82,42 @@ public static void login(){
 			account.add(inputFromAccount.next());
 		}
 	boolean passwordcheck=false;
+	boolean check=false;
 	String PassWord="";
 	String UserName="";
+	String username="";
 	Scanner input = new Scanner(System.in);
-	System.out.println("Enter your username");
-	String username = input.next();
 	do{
-	System.out.println("Enter your password");
-	String password = input.next();
-	for(int i=0; i<account.size();i++){
+	System.out.println("Enter your username");
+	username = input.next();
+	for(int i=0; i<account.size()-1;i++){
 		UserName=account.get(i);
+		PassWord=account.get(i+1);
 		if(UserName.equals(username)){
-			 PassWord=account.get(i+1);
-			if (PassWord.equals(password)){
-				passwordcheck=true;
-			}
+		System.out.println("Enter your password");
+		String password = input.next();
+		if (PassWord.equals(password))check=true;
 		}
 	}
-	if (!passwordcheck)System.out.println("Password invalid");
-	}while(!passwordcheck);
+	if(!check)System.out.println("User not found! Please try again");
+	}while(!check);
 	
 	
-	
-	System.out.println("Right");
+	System.out.println("Login Sucessful!\nPlease enter \n(1)to view your saved information\n(2)to edit your saved information\n(3)to logout");
+	int command = input.nextInt();
+	boolean checker=false;
+	do{
+	if(command==0||command==1||command==2||command==3)checker=true;
+	if(command==1){
+		viewInfo(username);	
+	}
+	else if(command==2){
+		editInfo(username);
+	}
+	else if(command==3){
+		starter();
+	}
+	}while(!checker);
 	}
 	
 	catch (java.io.IOException ex){
@@ -109,11 +126,18 @@ public static void login(){
 }
 	
 	
+	public static void viewInfo(String user){
+		
+	}
 	
+	
+	public static void editInfo(String user){
+		
+	}
 	
 	
 
-public static boolean validigits(String pass){
+	public static boolean validigits(String pass){
 	if (pass.length()>8){
         return true;
 	}
@@ -125,7 +149,7 @@ public static boolean validigits(String pass){
 
 
 
-public static boolean letter_digit_check(String pass){
+	public static boolean letter_digit_check(String pass){
 	int sum=0;
 	int count=0;
 	for (int i=0; i<pass.length(); i++){
