@@ -60,6 +60,10 @@ public class Personal_Information{
 		}
 		output.close();
 		System.out.println("Account created for "+FirstName+" "+LastName);
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		starter();
 		}
 		catch (java.io.IOException ex){
 			System.out.println("I/O Errors: File is not found");
@@ -101,7 +105,18 @@ public class Personal_Information{
 	}
 	if(!check)System.out.println("User not found! Please try again");
 	}while(!check);
-	
+	int userindex=0;
+	for(int i=0; i<info.size();i++){
+		if(username.equals(info.get(i)))userindex=1;
+	}
+	if (userindex==0){
+		info.add(username);
+		PrintWriter output = new PrintWriter(Information);
+		for (int i=0; i<info.size(); i++){
+			output.println(info.get(i));
+		}
+		output.close();
+	}
 	
 	System.out.println("Login Sucessful!\nPlease enter \n(1)to view your saved information\n(2)to edit your saved information\n(3)to logout");
 	int command = input.nextInt();
@@ -127,16 +142,90 @@ public class Personal_Information{
 	
 	
 	public static void viewInfo(String user){
+		try{
+			File Information = new File("information.txt");
+			ArrayList<String> info = new ArrayList<String>();
+			Scanner inputFromInformation = new Scanner(Information);
+			while (inputFromInformation.hasNext()){
+				info.add(inputFromInformation.next());
+			}
+			boolean check=false;
+			for(int i=0; i<info.size();i++){
+				if(user.equals(info.get(i))){
+					check=true;
+					System.out.println("Name: "+info.get(i+1)+" "+info.get(i+2));
+					System.out.println("Birthdate: "+info.get(i+3));
+					System.out.println("Bank Information: "+info.get(i+4));
+					System.out.println("Social Security Number: "+info.get(i+5));
+				}					
+			}
+			if(!check)System.out.println("Information not found in the system");
+		}
 		
+		catch (java.io.IOException ex){
+			System.out.println("I/O Errors: File is not found");
+				}	
 	}
 	
 	
 	public static void editInfo(String user){
+		try{
+			File Information = new File("information.txt");
+			ArrayList<String> info = new ArrayList<String>();
+			Scanner inputFromInformation = new Scanner(Information);
+			System.out.println("Please change all your informations for security reasons");
+			//Actually because this program cannot handle changing only one specific info :D
+			while (inputFromInformation.hasNextLine()){
+				info.add(inputFromInformation.nextLine());
+			}
+			int index=0;
+			
+			for(int i=0; i<info.size();i++){
+				String uname="";
+				String name=info.get(i);
+				for (int j=0; j<name.length(); j++){
+					String temp = name.charAt(j)+"";
+					if (!temp.equals(" "))
+					uname+=name.charAt(j);
+				}
+				if(user.equals(uname)){
+					 index=i;
+				}		
+			}
+			info.set(index,Editor(user));
+			PrintWriter output = new PrintWriter(Information);
+			for (int i=0; i<info.size(); i++){
+				output.println(info.get(i));
+			}
+			output.close();
+			Scanner input = new Scanner(System.in);
+			System.out.println("Enter (1) to logout");
+			int command = input.nextInt();
+			if (command==1)starter();
+		 }
+		
+		catch (java.io.IOException ex){
+			System.out.println("I/O Errors: File is not found");
+				}	
+	}
+	
+	public static String Editor(String username){
+		String main = username+" ";
+		Scanner input = new Scanner(System.in);
+		System.out.println("Enter your first and last name(for example: John Lennon):");
+		main+=input.nextLine()+" ";
+		System.out.println("Enter your date of birth (as MM/DD/YYYY)");
+		main+=input.nextLine()+" ";
+		System.out.println("Enter your social security number (as 109382193)");
+		main+=input.nextLine()+" ";
+		System.out.println("Enter your bank name and account number (as BANKOFMARS-10789)");
+		main+=input.nextLine();
+		System.out.println("Your new information has been saved");
+		return main;
 		
 	}
 	
 	
-
 	public static boolean validigits(String pass){
 	if (pass.length()>8){
         return true;
@@ -144,8 +233,6 @@ public class Personal_Information{
 	else 
 		return false;
 }
-
-
 
 
 
