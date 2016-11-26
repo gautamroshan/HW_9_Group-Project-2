@@ -5,12 +5,15 @@ public class Personal_Information{
 	
 	
 	public static void main(String[]args) throws IOException {
+		System.out.println("Welcome to the InfoCabinet");
 		starter();
 		}
 	
 	
+	
+	
 	public static void starter() throws IOException{
-		System.out.println("Welcome to the InfoCabinet"+"\nType and Enter,\n(1)for creating an account.\n(2)for returning users login.\n(3)to exit.");
+		System.out.println("\nType and Enter,\n(1)for creating an account.\n(2)for returning users login.\n(3)to exit.");
 		Scanner input = new Scanner(System.in);
 		int userCommand = input.nextInt();
 		if(userCommand==1){
@@ -21,16 +24,22 @@ public class Personal_Information{
 		}
 	
 		else if(userCommand==3){
-			System.exit(0);
 			System.out.println("Thanks for using InfoCabinet!");
+			System.exit(0);
 			}
 	}
 		
+	
+	
+	
 
 	public static void createAccount()throws IOException{
 		try{
 			File accountInfo = new File("account.txt");
+			File Information = new File("information.txt");
 			ArrayList<String> temp = new ArrayList<String>();
+			ArrayList<String> info = new ArrayList<String>();
+			Scanner inputFromInformation = new Scanner(Information);
 			Scanner inputFromAccount = new Scanner(accountInfo);
 			while (inputFromAccount.hasNextLine()){
 				temp.add(inputFromAccount.nextLine());
@@ -53,22 +62,26 @@ public class Personal_Information{
 			Password = input.next();
 			if(validigits(Password)&&letter_digit_check(Password))check=true;
 		}
+		boolean CreateAccount = true;
+		System.out.println("You need to fill the information for completion of your account registration");
+		editInfo(UserName,CreateAccount);
 		PrintWriter output = new PrintWriter(accountInfo);
 		temp.add(UserName+" "+Password);
 		for (int i=0; i<temp.size(); i++){
 			output.println(temp.get(i));
 		}
 		output.close();
-		System.out.println("Account created for "+FirstName+" "+LastName);
-		System.out.println();
-		System.out.println();
-		System.out.println();
+		System.out.println("Account created for "+FirstName+" "+LastName+"\nYou have been logged out\n");
 		starter();
 		}
 		catch (java.io.IOException ex){
 			System.out.println("I/O Errors: File is not found");
 				}	
 		}
+	
+	
+	
+	
 	
 	
 	public static void login(){
@@ -79,13 +92,12 @@ public class Personal_Information{
 		ArrayList<String> info = new ArrayList<String>();
 		Scanner inputFromAccount = new Scanner(Account);
 		Scanner inputFromInformation = new Scanner(Information);
-		while (inputFromInformation.hasNext()){
-			info.add(inputFromInformation.next());
+		while (inputFromInformation.hasNextLine()){
+			info.add(inputFromInformation.nextLine());
 		}
 		while (inputFromAccount.hasNext()){
 			account.add(inputFromAccount.next());
 		}
-	boolean passwordcheck=false;
 	boolean check=false;
 	String PassWord="";
 	String UserName="";
@@ -105,29 +117,18 @@ public class Personal_Information{
 	}
 	if(!check)System.out.println("User not found! Please try again");
 	}while(!check);
-	int userindex=0;
-	for(int i=0; i<info.size();i++){
-		if(username.equals(info.get(i)))userindex=1;
-	}
-	if (userindex==0){
-		info.add(username);
-		PrintWriter output = new PrintWriter(Information);
-		for (int i=0; i<info.size(); i++){
-			output.println(info.get(i));
-		}
-		output.close();
-	}
 	
 	System.out.println("Login Sucessful!\nPlease enter \n(1)to view your saved information\n(2)to edit your saved information\n(3)to logout");
 	int command = input.nextInt();
 	boolean checker=false;
+	boolean temp = false;
 	do{
 	if(command==0||command==1||command==2||command==3)checker=true;
 	if(command==1){
 		viewInfo(username);	
 	}
 	else if(command==2){
-		editInfo(username);
+		editInfo(username,temp);
 	}
 	else if(command==3){
 		starter();
@@ -139,6 +140,9 @@ public class Personal_Information{
 		System.out.println("I/O Errors: File is not found");
 			}	
 }
+
+	
+	
 	
 	
 	public static void viewInfo(String user){
@@ -159,7 +163,8 @@ public class Personal_Information{
 					System.out.println("Social Security Number: "+info.get(i+5));
 				}					
 			}
-			if(!check)System.out.println("Information not found in the system");
+			if(!check)System.out.println("No information found.\nYou have been logged out.");
+			starter();
 		}
 		
 		catch (java.io.IOException ex){
@@ -168,20 +173,36 @@ public class Personal_Information{
 	}
 	
 	
-	public static void editInfo(String user){
+	
+	
+	
+	public static void editInfo(String user, boolean Registration){
 		try{
 			File Information = new File("information.txt");
 			ArrayList<String> info = new ArrayList<String>();
 			Scanner inputFromInformation = new Scanner(Information);
-			System.out.println("Please change all your informations for security reasons");
+		if (Registration){
+			while (inputFromInformation.hasNextLine()){
+				info.add(inputFromInformation.nextLine());
+			}
+			
+			info.add(Editor(user));
+			PrintWriter output = new PrintWriter(Information);
+			for (int i=0; i<info.size(); i++){
+				output.println(info.get(i));
+			}
+			output.close();
+		}
+		else{
+			System.out.println("If you want to change any information, \nYou will need to change all informations, for security reasons");
 			//Actually because this program cannot handle changing only one specific info :D
 			while (inputFromInformation.hasNextLine()){
 				info.add(inputFromInformation.nextLine());
 			}
+			String uname=" ";
 			int index=0;
-			
 			for(int i=0; i<info.size();i++){
-				String uname="";
+				 uname="";
 				String name=info.get(i);
 				for (int j=0; j<name.length(); j++){
 					String temp = name.charAt(j)+"";
@@ -192,6 +213,7 @@ public class Personal_Information{
 					 index=i;
 				}		
 			}
+			
 			info.set(index,Editor(user));
 			PrintWriter output = new PrintWriter(Information);
 			for (int i=0; i<info.size(); i++){
@@ -203,11 +225,16 @@ public class Personal_Information{
 			int command = input.nextInt();
 			if (command==1)starter();
 		 }
+		}
 		
 		catch (java.io.IOException ex){
 			System.out.println("I/O Errors: File is not found");
 				}	
 	}
+	
+	
+	
+	
 	
 	public static String Editor(String username){
 		String main = username+" ";
@@ -216,14 +243,16 @@ public class Personal_Information{
 		main+=input.nextLine()+" ";
 		System.out.println("Enter your date of birth (as MM/DD/YYYY)");
 		main+=input.nextLine()+" ";
-		System.out.println("Enter your social security number (as 109382193)");
-		main+=input.nextLine()+" ";
 		System.out.println("Enter your bank name and account number (as BANKOFMARS-10789)");
+		main+=input.nextLine()+" ";
+		System.out.println("Enter your social security number (as 109382193)");
 		main+=input.nextLine();
 		System.out.println("Your new information has been saved");
 		return main;
 		
 	}
+	
+	
 	
 	
 	public static boolean validigits(String pass){
@@ -236,6 +265,7 @@ public class Personal_Information{
 
 
 
+	
 	public static boolean letter_digit_check(String pass){
 	int sum=0;
 	int count=0;
