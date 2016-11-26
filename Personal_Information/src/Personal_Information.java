@@ -1,3 +1,5 @@
+
+//This is a branch for merging the completed works.
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -126,15 +128,11 @@ public class Personal_Information{
 	boolean checker=false;
 	boolean temp = false;
 	do{
-	if(command==0||command==1||command==2||command==3)checker=true;
-	if(command==1){
-		viewInfo(username);	
-	}
-	else if(command==2){
-		editInfo(username,temp);
-	}
-	else if(command==3){
-		starter();
+	if(command==1||command==2||command==3)checker=true;
+	switch(command){
+	case 1: viewInfo(username);break;	
+	case 2: editInfo(username,temp);break;
+	case 3: starter();
 	}
 	}while(!checker);
 	}
@@ -145,7 +143,15 @@ public class Personal_Information{
 }
 
 	
-	
+	public static String captcha(){
+		String captcha="";
+		for(int i=0; i<8; i+=2){
+			captcha+=(char)(65+Math.random()*26)+" ";
+			captcha+=(char)(97+Math.random()*26);
+		}
+		return captcha;
+		
+	}
 	
 	
 	public static void viewInfo(String user){
@@ -156,6 +162,21 @@ public class Personal_Information{
 			while (inputFromInformation.hasNext()){
 				info.add(inputFromInformation.next());
 			}
+			String captcha,caption;
+			do{
+				captcha = captcha();
+				System.out.println("Enter the text below including space:");
+				System.out.println(captcha);
+				Scanner input = new Scanner(System.in);
+				caption = input.nextLine();
+				if(!caption.equals(captcha))System.out.println("Please try again");
+	
+			}while(!caption.equals(captcha));
+			
+			
+			
+			
+			
 			boolean check=false;
 			for(int i=0; i<info.size();i++){
 				if(user.equals(info.get(i))){
@@ -164,6 +185,7 @@ public class Personal_Information{
 					System.out.println("Birthdate: "+info.get(i+3));
 					System.out.println("Bank Information: "+info.get(i+4));
 					System.out.println("Social Security Number: "+info.get(i+5));
+					break;
 				}					
 			}
 			if(!check)System.out.println("No information found.\nYou have been logged out.");
@@ -198,7 +220,6 @@ public class Personal_Information{
 		}
 		else{
 			System.out.println("If you want to change any information, \nYou will need to change all informations, for security reasons");
-			//Actually because this program cannot handle changing only one specific info :D
 			while (inputFromInformation.hasNextLine()){
 				info.add(inputFromInformation.nextLine());
 			}
@@ -259,7 +280,7 @@ public class Personal_Information{
 	
 	
 	public static boolean validigits(String pass){
-	if (pass.length()>8){
+	if (pass.length()>=8){
         return true;
 	}
 	else 
@@ -280,7 +301,7 @@ public class Personal_Information{
 			count++;
 		}
 	}
-	if (sum>2 && count>2)
+	if (sum>=2 && count>=2)
 		return true;
 	else 
 		return false;
