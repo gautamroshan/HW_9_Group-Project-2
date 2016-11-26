@@ -45,16 +45,14 @@ public class Personal_Information{
 				temp.add(inputFromAccount.nextLine());
 			}
 		Scanner input = new Scanner(System.in);
-		System.out.println("Enter your first name");
-		String FirstName = input.next();
-		System.out.println("Enter your last name");
-		String LastName = input.next();
 		System.out.println("Enter your prefered username");
 		String UserName = input.next();
 		System.out.println("Your password should meet the following requirements:");
-		System.out.println("-It must have at least eight characters.\n-It must consist of only letters and digits.\n-It must contain at least two digits and two characters.");
+		System.out.println("-It must have at least eight characters.\n-It must consist of only letters and digits.\n-It must contain more than two digits and two characters.");
 		System.out.println("\nEnter your new Password");
 		String Password = input.next();
+		String Pass;
+		
 		boolean check=false;
 		if(validigits(Password)&&letter_digit_check(Password))check=true;
 		while(!check){
@@ -62,6 +60,11 @@ public class Personal_Information{
 			Password = input.next();
 			if(validigits(Password)&&letter_digit_check(Password))check=true;
 		}
+		do{
+			System.out.println("\nPlease re-enter the Password");
+			Pass = input.next();
+			if(!Pass.equals(Password))System.out.println("Passwords donot match!");
+			}while(!Pass.equals(Pass));
 		boolean CreateAccount = true;
 		System.out.println("You need to fill the information for completion of your account registration");
 		editInfo(UserName,CreateAccount);
@@ -71,7 +74,7 @@ public class Personal_Information{
 			output.println(temp.get(i));
 		}
 		output.close();
-		System.out.println("Account created for "+FirstName+" "+LastName+"\nYou have been logged out\n");
+		System.out.println("Your account has been created and your information has been saved\nYou have been logged out for this session\n");
 		starter();
 		}
 		catch (java.io.IOException ex){
