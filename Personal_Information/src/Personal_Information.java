@@ -1,4 +1,3 @@
-
 //This is a branch for merging the completed works.
 import java.io.*;
 import java.util.ArrayList;
@@ -289,5 +288,3 @@ public class Personal_Information{
 	}
 
 }
-
-
