@@ -1,5 +1,4 @@
 
-//This is a branch for merging the completed works.
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -122,13 +121,14 @@ public class Personal_Information{
 	}
 	if(!check)System.out.println("User not found! Please try again");
 	}while(!check);
-	
-	System.out.println("Login Sucessful!\nPlease enter \n(1)to view your saved information\n(2)to edit your saved information\n(3)to logout");
-	int command = input.nextInt();
 	boolean checker=false;
-	boolean temp = false;
+	System.out.println("Login Successful!");
 	do{
+	System.out.println("Please enter \n(1)to view your saved information\n(2)to edit your saved information\n(3)to logout");
+	int command = input.nextInt();
+	boolean temp = false;
 	if(command==1||command==2||command==3)checker=true;
+	else System.out.println("Invalid Input! Please try again");
 	switch(command){
 	case 1: viewInfo(username);break;	
 	case 2: editInfo(username,temp);break;
