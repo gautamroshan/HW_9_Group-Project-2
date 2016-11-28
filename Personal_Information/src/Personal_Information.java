@@ -1,4 +1,3 @@
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -12,9 +11,14 @@ public class Personal_Information{
 
 
 
-
+	// This is where the user will start
+	// They will be given 3 options
+	// They can either Create an Account,
+	// Login an Account, or Exit the program
 	public static void starter() throws IOException{
-		System.out.println("\nType and Enter,\n(1)for creating an account.\n(2)for returning users login.\n(3)to exit.");
+		System.out.println("\nType and Enter,\n(1)for creating an account."
+				+ "\n(2)for returning users login."
+				+ "\n(3)to exit.");
 		Scanner input = new Scanner(System.in);
 		int userCommand = input.nextInt();
 		if(userCommand==1){
@@ -33,7 +37,8 @@ public class Personal_Information{
 
 
 
-
+	// this is how the file system works and shows
+	// which files we use to store the user inputed information.
 	public static void createAccount()throws IOException{
 		try{
 			File accountInfo = new File("account.txt");
@@ -46,12 +51,29 @@ public class Personal_Information{
 				temp.add(inputFromAccount.nextLine());
 			}
 			Scanner input = new Scanner(System.in);
-			System.out.println("Enter your prefered username");
+			// This is where we will start the new account process
+			// first by telling us who you are.
+			System.out.println("Enter your First Name");
+			String firstName = input.next();
+			
+			System.out.println("Enter your Last Name");
+			String lastName = input.next();
+			// This will give the user recommended
+			// user names if they cannot think of one.
+			RecommendedUserNames(firstName,lastName);
+			// here they will be prompt to enter their preferred user name
+			System.out.println("Enter your preferred username");
 			String UserName = input.next();
+			// This will prompt the user for a password
+			// The password will have to meet these requirements
 			System.out.println("Your password should meet the following requirements:");
-			System.out.println("-It must have at least eight characters.\n-It must consist of only letters and digits.\n-It must contain more than two digits and two characters.");
+			System.out.println("-It must have at least eight characters.\n-It must consist of only letters and digits."
+							+ "\n-It must contain more than two digits and two characters.");
 			System.out.println("\nEnter your new Password");
 			String Password = input.next();
+			
+			// this is what will verify the user password and see if it meets the recommended requirements
+			// for security reasons of course.
 			String Pass;
 
 			boolean check=false;
@@ -64,7 +86,7 @@ public class Personal_Information{
 			do{
 				System.out.println("\nPlease re-enter the Password");
 				Pass = input.next();
-				if(!Pass.equals(Password))System.out.println("Passwords donot match!");
+				if(!Pass.equals(Password))System.out.println("Passwords do not match!");
 			}while(!Pass.equals(Pass));
 			boolean CreateAccount = true;
 			System.out.println("You need to fill the information for completion of your account registration");
@@ -75,7 +97,8 @@ public class Personal_Information{
 				output.println(temp.get(i));
 			}
 			output.close();
-			System.out.println("Your account has been created and your information has been saved\nYou have been logged out for this session\n");
+			System.out.println("Your account has been created and your information has been saved"
+					+ "\nYou have been logged out for this session\n");
 			starter();
 		}
 		catch (java.io.IOException ex){
@@ -83,11 +106,31 @@ public class Personal_Information{
 		}	
 	}
 
+		// this is the custom method used for the Recommended User Name 
+	private static void RecommendedUserNames(String first, String last) {
+		String [][] usernames = new String [2][2];
+		int [] RandomNumbers = new int [4];
+		for (int i=0; i < 4; i++) {
+			RandomNumbers[i]=(int)(Math.random()*100);
+		}
+		int k = 0;
+		System.out.println("Choose a unique username, some of the recommended ones for you are below");
+		for (int i = 0; i < 2; i++)
+			for (int j = 0; j < 2; j++) {
+				if (k%2==0) usernames[i][j] = first+last+RandomNumbers[k];
+				else usernames[i][j] = last+first+RandomNumbers[k];
+				k++;
+				System.out.println(usernames[i][j]+ " ");
+			}
+		System.out.println();
+	}
 
 
 
-
-
+	// this is where the login part of the code starts
+	// the user will be asked to login after he or she has made an account 
+	// the user will then be asked to enter their user name and password
+	// if it does not match our data you will be denied entry into your account
 	public static void login(){
 		try{
 			File Information = new File("information.txt");
@@ -124,7 +167,9 @@ public class Personal_Information{
 			boolean checker=false;
 			System.out.println("Login Successful!");
 			do{
-				System.out.println("Please enter \n(1)to view your saved information\n(2)to edit your saved information\n(3)to logout");
+				System.out.println("Please enter \n(1)to view your saved information"
+						+ "\n(2)to edit your saved information"
+						+ "\n(3)to logout");
 				int command = input.nextInt();
 				boolean temp = false;
 				if(command==1||command==2||command==3)checker=true;
@@ -142,7 +187,7 @@ public class Personal_Information{
 		}	
 	}
 
-
+	// this is a captcha you know, because its not official without one.
 	public static String captcha(){
 		String captcha="";
 		for(int i=0; i<8; i+=2){
@@ -153,7 +198,7 @@ public class Personal_Information{
 
 	}
 
-
+	// this is what will allow the user to view their entered information
 	public static void viewInfo(String user){
 		try{
 			File Information = new File("information.txt");
@@ -200,7 +245,7 @@ public class Personal_Information{
 
 
 
-
+	// This is where we allow the user to edit their personal info 
 	public static void editInfo(String user, boolean Registration){
 		try{
 			File Information = new File("information.txt");
@@ -219,7 +264,8 @@ public class Personal_Information{
 				output.close();
 			}
 			else{
-				System.out.println("If you want to change any information, \nYou will need to change all informations, for security reasons");
+				System.out.println("If you would like to change any information, "
+						+ "\nYou will need to change all the information, for security reasons");
 				while (inputFromInformation.hasNextLine()){
 					info.add(inputFromInformation.nextLine());
 				}
@@ -259,7 +305,7 @@ public class Personal_Information{
 
 
 
-
+ // This is where the user will enter their new personal information
 	public static String Editor(String username){
 		String main = username+" ";
 		Scanner input = new Scanner(System.in);
@@ -278,7 +324,7 @@ public class Personal_Information{
 
 
 
-
+// this is to make sure the password is atleast 8 characters long
 	public static boolean validigits(String pass){
 		if (pass.length()>=8){
 			return true;
@@ -289,7 +335,7 @@ public class Personal_Information{
 
 
 
-
+// this is to make sure the password meets the recommended requirements.
 	public static boolean letter_digit_check(String pass){
 		int sum=0;
 		int count=0;
