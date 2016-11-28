@@ -87,7 +87,7 @@ public class Personal_Information{
 				System.out.println("\nPlease re-enter the Password");
 				Pass = input.next();
 				if(!Pass.equals(Password))System.out.println("Passwords do not match!");
-			}while(!Pass.equals(Pass));
+			}while(!Pass.equals(Password));
 			boolean CreateAccount = true;
 			System.out.println("You need to fill the information for completion of your account registration");
 			editInfo(UserName,CreateAccount);
